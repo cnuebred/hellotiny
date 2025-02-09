@@ -1,3 +1,5 @@
+#define __AVR_ATtiny85__
+
 #include <avr/io.h>
 #include <util/delay.h>
 

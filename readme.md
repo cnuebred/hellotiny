@@ -9,4 +9,6 @@ avr-objcopy -O ihex -R .eeprom main.elf main.hex
 
 //wgrywanie na arduino
 avrdude -c arduino -p t85 -P COM7 -b 19200 -U flash:w:main.hex:i
+
+// to check https://codeandlife.com/2012/01/29/avr-attiny-usb-tutorial-part-3/
 ```
