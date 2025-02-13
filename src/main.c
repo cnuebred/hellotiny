@@ -1,13 +1,12 @@
 #define __AVR_ATtiny85__
 
-
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/pgmspace.h>
 
 #include "utils.h"
 #include "io/io.h"
-
+#include "twi/uart.h"
 
 int main(void) {
     // Ustaw PB0 jako wyjście (Tx)

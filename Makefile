@@ -54,7 +54,12 @@ TARGET = $(BUILDDIR)/$(TARGET_NAME)
 # Object files: will find all .c/.h files in current directory
 #  and in LIBDIR.  If you have any other (sub-)directories with code,
 #  you can add them in to SOURCES below in the wildcard statement.
-SOURCES=$(wildcard $(SRCDIR)/*.c $(LIBDIR)/*.c)
+
+EXTEND_SOURCE = \
+		$(SRCDIR)/io/*.c \
+		$(SRCDIR)/twi/*.c \
+
+SOURCES=$(wildcard $(SRCDIR)/*.c $(LIBDIR)/*.c $(EXTEND_SOURCE))
 OBJECTS=$(SOURCES:.c=.o)
 HEADERS=$(SOURCES:.c=.h)
 
@@ -79,6 +84,7 @@ TARGET_ARCH = -mmcu=$(MCU)
 
 all: $(TARGET).hex 
 	rm -f ./src/*.o
+	rm -f ./src/**/*.o
 
 %.o: %.c $(HEADERS) Makefile
 	 $(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c -o $@ $<;
