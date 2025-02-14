@@ -1,8 +1,13 @@
+
+#include <util/delay.h>
+#include "assert.h"
 #include "i2c.h"
-#include "../io/io.h"
+#include "../utils.h"
+
 
 void i2c_init()
 {
+	
 	DDRB |= (1 << PIN_SDA);
 	DDRB |= (1 << PIN_SCL);
 

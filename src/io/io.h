@@ -9,17 +9,16 @@
 #define UART_BIT_DELAY_US ((1000000 / UART_BAUDRATE) * 2)
 
 #define UART_PORT_TX PORTB
-#define UART_PIN_TX PB0
+#define UART_PIN_TX PB1
 
 // ===============================================================
 
 #define LOW 0
 #define HIGH 1
 
-typedef int port_t;
-typedef int pin_t;
-typedef int bit_t;
+#define SET_BIT(PORT, PIN)  ((PORT) |= (1 << (PIN)))
+#define CLR_BIT(PORT, PIN)  ((PORT) &= ~(1 << (PIN)))
 
-extern void set_pin(port_t port, pin_t pin, bit_t value);
+
 
 #endif // _TINY_IO

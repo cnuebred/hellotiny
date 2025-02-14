@@ -1,6 +1,7 @@
 #include <util/delay.h>
-
-#include "../io/io.h"
+#include "assert.h"
+#include "uart.h"
+#include "../utils.h"
 
 // static int get_parity(unsigned int n)
 // {
@@ -15,28 +16,38 @@
 
 void uart_transmit(char data)
 {
-  set_pin(UART_PORT_TX, UART_PIN_TX, LOW);
+  CLR_BIT(UART_PORT_TX, UART_PIN_TX);
   _delay_us(UART_BIT_DELAY_US); 
 
   for (uint8_t i = 0; i < 8; i++)
   {
     if ((data >> i) & 1)
     {
-      set_pin(UART_PORT_TX, UART_PIN_TX, HIGH);
+      SET_BIT(UART_PORT_TX, UART_PIN_TX);
     }
     else
     {
-      set_pin(UART_PORT_TX, UART_PIN_TX, LOW);
+      CLR_BIT(UART_PORT_TX, UART_PIN_TX);
     }
     _delay_us(UART_BIT_DELAY_US);
   }
 
-  set_pin(UART_PORT_TX, UART_PIN_TX, HIGH);
+  SET_BIT(UART_PORT_TX, UART_PIN_TX);
   _delay_us(UART_BIT_DELAY_US);
 }
 
-void uart_transmit(char * data){
-  // tutaj coś żeby nadawał zdania
+void uart_send(char * data){
+  assert(data);
+  uint8_t index = 0;
+
+  while(true){
+    if(data[index] == '\0'){
+      break;
+    }
+    uart_transmit(data[index]);
+    index += 1;
+  }
+
 }
 
 // void uart_receive(char data)

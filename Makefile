@@ -23,7 +23,7 @@ BUILDDIR = ./build
 
 PROGRAMMER_TYPE = arduino
 # extra arguments to avrdude: baud rate, chip type, -F flag, etc.
-PROGRAMMER_ARGS = -P COM5	
+PROGRAMMER_ARGS = -P COM10	
 
 ##########------------------------------------------------------##########
 ##########                  Program Locations                   ##########
@@ -34,7 +34,7 @@ CC = avr-gcc
 OBJCOPY = avr-objcopy
 OBJDUMP = avr-objdump
 AVRSIZE = avr-size
-AVRDUDE = /mnt/d/programs/avrdude/avrdude.exe
+AVRDUDE = /mnt/d/soft/avrdude/avrdude.exe
 
 ##########------------------------------------------------------##########
 ##########                   Makefile Magic!                    ##########
