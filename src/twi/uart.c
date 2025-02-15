@@ -14,6 +14,15 @@
 //   return parity;
 // }
 
+void init_uart(){
+  SET_BIT(DDRB, UART_PIN_TX);
+  SET_BIT(UART_PORT_TX, UART_PIN_TX);
+}
+void terminate_uart(){
+  CLR_BIT(DDRB, UART_PIN_TX);
+  CLR_BIT(UART_PORT_TX, UART_PIN_TX);
+}
+
 void uart_transmit(char data)
 {
   CLR_BIT(UART_PORT_TX, UART_PIN_TX);
