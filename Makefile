@@ -56,7 +56,6 @@ TARGET = $(BUILDDIR)/$(TARGET_NAME)
 #  you can add them in to SOURCES below in the wildcard statement.
 
 EXTEND_SOURCE = \
-		$(SRCDIR)/io/*.c \
 		$(SRCDIR)/twi/*.c \
 
 SOURCES=$(wildcard $(SRCDIR)/*.c $(LIBDIR)/*.c $(EXTEND_SOURCE))
