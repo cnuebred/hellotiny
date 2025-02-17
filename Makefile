@@ -56,7 +56,8 @@ TARGET = $(BUILDDIR)/$(TARGET_NAME)
 #  you can add them in to SOURCES below in the wildcard statement.
 
 EXTEND_SOURCE = \
-		$(SRCDIR)/twi/*.c \
+		$(SRCDIR)/twi/*.c 				\
+		$(SRCDIR)/ssd1306/*.c 		\
 
 SOURCES=$(wildcard $(SRCDIR)/*.c $(LIBDIR)/*.c $(EXTEND_SOURCE))
 OBJECTS=$(SOURCES:.c=.o)
@@ -127,6 +128,9 @@ clean:
 	$(TARGET).o $(TARGET).d $(TARGET).eep $(TARGET).lst \
 	$(TARGET).lss $(TARGET).sym $(TARGET).map $(TARGET)~ \
 	$(TARGET).eeprom
+	rm -f ./src/*.o
+	rm -f ./src/**/*.o
+
 
 squeaky_clean:
 	rm -f *.elf *.hex *.obj *.o *.d *.eep *.lst *.lss *.sym *.map *~ *.eeprom
