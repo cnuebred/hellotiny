@@ -126,11 +126,12 @@ void oled_set_cursor(uint8_t x, uint8_t y)
   const byte set_cursor_set_list[] = {
     I2C_OLED_ADDRESS,
     OLED_COMMAND_MODE,
+    OLED_SET_MEMORY_ADDRESING_MODE_, 0x00,
     OLED_SET_PAGE_START_ADDRESS(y),
     OLED_SET_LOWER_START_COL(x & 0x0F),
     OLED_SET_UPPER_START_COL((x >> 4) & 0x0F)
   };
-
+  
   send_package(set_cursor_set_list, NELEMS(set_cursor_set_list));
 }
 

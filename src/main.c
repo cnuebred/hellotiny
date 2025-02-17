@@ -18,7 +18,20 @@ int main(void)
     oled_fill_black();
     while (true)
     {
+        oled_fill_black();
         oled_write_text(34, 3, "HELLO TINY");
-        _delay_ms(1000);
+        _delay_ms(300);
+
+        oled_fill_black();
+        oled_write_text(34, 5, "HELLO TINY");
+        _delay_ms(300);
+
+        oled_fill_black();
+        oled_write_text(15, 2, "HELLO TINY");
+        _delay_ms(300);
+
+        oled_fill_black();
+        oled_write_text(40, 6, "HELLO TINY");
+        _delay_ms(300);
     }
 }

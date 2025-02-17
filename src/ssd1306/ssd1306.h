@@ -30,9 +30,9 @@
 // range: 0xB0 ~ 0xB7 [0 ~ 7]
 #define OLED_SET_PAGE_START_ADDRESS(value)          (0xB0 + ((value) % 0xB7)) 
 // range: 0x00 ~ 0x0F [0 ~ 15]
-#define OLED_SET_LOWER_START_COL(value)             (0x00 + ((value) % 0x0F)) 
+#define OLED_SET_LOWER_START_COL(value)             (0x00 + ((value) % 0x10)) 
 // range: 0x10 ~ 0x1F [0 ~ 15]
-#define OLED_SET_UPPER_START_COL(value)             (0x10 + ((value) % 0x1F)) 
+#define OLED_SET_UPPER_START_COL(value)             (0x10 + ((value) % 0x20)) 
 
 // range: 0x00 ~ 0xFF [0 ~ 255]
 #define OLED_SET_CONTRAST_CONTROL_                                      0x81
