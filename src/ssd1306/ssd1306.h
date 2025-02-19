@@ -22,6 +22,7 @@
 #define OLED_SET_MEMORY_ADDRESING_MODE_                                 0x20
 #define OLED_SET_MEMORY_ADDRESING_MODE__HORIZONTAL                      0x00
 #define OLED_SET_MEMORY_ADDRESING_MODE__VERTICAL                        0x01
+#define OLED_SET_MEMORY_ADDRESING_MODE__PAGE                            0x10
 #define OLED_SET_COLUMN_ADDRESS__                                       0x21
 #define OLED_SET_PAGE_ADDRESS__                                         0x22
 
@@ -127,6 +128,11 @@ extern void oled_set_cursor(uint8_t x, uint8_t y);
 extern void oled_draw_char(uint8_t x, uint8_t y, char c);
 
 extern void oled_write_text(uint8_t x, uint8_t y, const char *text);
+
+extern void oled_draw_bitmap(
+  uint8_t x, uint8_t y, uint8_t size_x, uint8_t size_y, 
+  const byte *bitmap
+);
 
 extern void oled_fill_black();
 

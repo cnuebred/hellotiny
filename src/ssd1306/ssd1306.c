@@ -1,8 +1,8 @@
 #include "ssd1306.h"
 #include "../twi/i2c.h"
+#include <util/delay.h>
 
-
-const byte FONT5x7[96][5] PROGMEM = {
+static const byte FONT5x7[96][5] PROGMEM = {
   {0x00, 0x00, 0x00, 0x00, 0x00}, // (SPACJA)
   {0x00, 0x00, 0x5F, 0x00, 0x00}, // !
   {0x00, 0x07, 0x00, 0x07, 0x00}, // "
@@ -66,7 +66,7 @@ const byte FONT5x7[96][5] PROGMEM = {
 
 //    {0x3E, 0x41, 0x49, 0x49, 0x3A}, // G
 /*
-     [0 1 2 3 4 5 6 7]
+       [0 1 2 3 4 5 6 7]
 0x3E    0 0 1 1 1 1 1 0
 0x41    0 0 1 0 0 0 0 1
 0x49    0 1 0 0 1 0 0 1
@@ -75,7 +75,7 @@ const byte FONT5x7[96][5] PROGMEM = {
 
 (rotate)
 
-||0x3E|0x41|0x49|0x49|0x3A|
+|  |0x3E|0x41|0x49|0x49|0x3A|
 ____________________________
 7  |    |####|####|####|    |
 7__|____|####|####|####|____|
@@ -109,7 +109,7 @@ const byte init_oled_set_list[] = {
   OLED_SET_CONTRAST_CONTROL_, 0x7F,
   OLED_ENTIRE_DISPLAY_ON__ENABLE_GGDRAM,
   OLED_SET_NORMAL_DISPLAY, 
-  OLED_SET_DISPLAY_CLOCK_DIVIDE_RATIO_OSCILLATOR_FREQUENCY_, 0x80,
+  OLED_SET_DISPLAY_CLOCK_DIVIDE_RATIO_OSCILLATOR_FREQUENCY_, 0xF0,
   OLED_SET_PRECHARGE_PERIOD_, 0xF1, 
   OLED_SET_VCOM_DESELECT_LEVEL_, 0x20,
   OLED_CHARGE_PUMP_SETTINGS_, OLED_ENABLE_CHARGE_PUMP,
@@ -126,12 +126,12 @@ void oled_set_cursor(uint8_t x, uint8_t y)
   const byte set_cursor_set_list[] = {
     I2C_OLED_ADDRESS,
     OLED_COMMAND_MODE,
-    OLED_SET_MEMORY_ADDRESING_MODE_, 0x00,
+    OLED_SET_MEMORY_ADDRESING_MODE_, 0x10,
     OLED_SET_PAGE_START_ADDRESS(y),
     OLED_SET_LOWER_START_COL(x & 0x0F),
     OLED_SET_UPPER_START_COL((x >> 4) & 0x0F)
   };
-  
+
   send_package(set_cursor_set_list, NELEMS(set_cursor_set_list));
 }
 
@@ -160,6 +160,44 @@ void oled_write_text(uint8_t x, uint8_t y, const char *text)
       oled_draw_char(x, y, *text);
       x += 6; // 5 pixels + 1 white separator
       text++;
+  }
+}
+
+
+void oled_set_plane(uint8_t x, uint8_t y, uint8_t size_x, uint8_t size_y){
+  const byte fill_black_set_list[] = {
+    I2C_OLED_ADDRESS,
+    OLED_COMMAND_MODE,
+    OLED_SET_MEMORY_ADDRESING_MODE_, 
+    OLED_SET_MEMORY_ADDRESING_MODE__PAGE,
+    OLED_SET_COLUMN_ADDRESS__, x, (x + size_x),
+    OLED_SET_PAGE_ADDRESS__,   (0xB0 + y), (0xB0 + (y + size_y)),
+  };
+
+  send_package(fill_black_set_list, NELEMS(fill_black_set_list));
+}
+
+void oled_draw_bitmap(uint8_t x, uint8_t y, uint8_t size_x, uint8_t size_y, const byte *bitmap)
+{
+  oled_set_plane(x, y, size_x, size_y);
+
+  int seg = 0 % size_x;
+  int page = 0;
+  while (page < size_y)
+  {
+   
+    i2c_start();
+    i2c_write_byte(I2C_OLED_ADDRESS);
+    i2c_write_byte(OLED_DATA_MODE);
+  
+    for (uint16_t i = 0; i < size_x; i++)
+    {
+        i2c_write_byte(bitmap[(((size_y - 1) - page) + ((size_y) * i))]);
+    }
+  
+    i2c_stop();
+
+    page++;
   }
 }
 
