@@ -11,7 +11,7 @@
 
 
 
-extern void send_package(byte * data);
+extern void send_package(const byte * data, _size_t size);
 
 extern void i2c_init();
 extern void i2c_start();

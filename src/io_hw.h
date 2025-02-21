@@ -21,6 +21,10 @@
 #define I2C_PIN_SDA                                                       PB0
 #define I2C_PIN_SCL                                                       PB2
 
+// ============================  SSD1306 CONFIG  ============================
+
+#define OLED_ADDRESS                                                     0x3C
+
 // ==============================  IO OPS HW  ===============================
 
 #define SET_BIT(PORT, PIN)                           ((PORT) |= (1 << (PIN)))

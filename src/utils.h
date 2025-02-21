@@ -9,6 +9,8 @@
 // ===============================  TYPEDEFS  ===============================
 
 typedef unsigned char byte;
+typedef unsigned long _size_t;
 
+#define NELEMS(x)                                (sizeof(x) / sizeof((x)[0]))
 
 #endif // _TINY_UTILS
