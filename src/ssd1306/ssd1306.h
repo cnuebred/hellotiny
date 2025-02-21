@@ -15,6 +15,12 @@
 */
 #define I2C_OLED_ADDRESS ((OLED_ADDRESS << 1) | 0) 
 
+#define OLED_DISPLAY_SIZE_WIDTH 128
+#define OLED_DISPLAY_SIZE_HIGHT 64
+
+#define OLED_DISPLAY_ADDRESSING_SIZE_HIGHT (OLED_DISPLAY_SIZE_HIGHT/8)
+#define OLED_DISPLAY_ADDRESSING_SIZE_WIDTH OLED_DISPLAY_SIZE_WIDTH
+
 // ==========================  OLED I2C COMMANDS  ==========================
 
 #define OLED_COMMAND_MODE                                               0x00
@@ -22,6 +28,7 @@
 #define OLED_SET_MEMORY_ADDRESING_MODE_                                 0x20
 #define OLED_SET_MEMORY_ADDRESING_MODE__HORIZONTAL                      0x00
 #define OLED_SET_MEMORY_ADDRESING_MODE__VERTICAL                        0x01
+#define OLED_SET_MEMORY_ADDRESING_MODE__PAGE                            0x10
 #define OLED_SET_COLUMN_ADDRESS__                                       0x21
 #define OLED_SET_PAGE_ADDRESS__                                         0x22
 
@@ -96,8 +103,15 @@
 #define OLED_SET_VCOM_DESELECT_LEVEL_                                   0xDB
 #define OLED_NOP                                                        0xE3
 
+typedef enum {
+  OLED_BLACK = 0,
+  OLED_WHITE = 1,
+} OLED_COLOR;
+
+
 
 extern void oled_init();
+
 /*
   x - number of column
   y - number of row
@@ -124,10 +138,17 @@ extern void oled_init();
 */
 extern void oled_set_cursor(uint8_t x, uint8_t y);
 
-extern void oled_draw_char(uint8_t x, uint8_t y, char c);
+extern void oled_draw_char(uint8_t x, uint8_t y, char c, OLED_COLOR color);
 
-extern void oled_write_text(uint8_t x, uint8_t y, const char *text);
+extern void oled_set_pixels(uint8_t x, uint8_t y, byte column);
 
-extern void oled_fill_black();
+extern void oled_write_text(uint8_t x, uint8_t y, const char *text, OLED_COLOR color);
+
+extern void oled_draw_bitmap(
+  uint8_t x, uint8_t y, uint8_t size_x, uint8_t size_y, 
+  const byte *bitmap, OLED_COLOR color
+);
+
+extern void oled_clear();
 
 #endif // _TINY_SSD1306
