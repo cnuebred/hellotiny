@@ -149,9 +149,6 @@ extern void oled_draw_bitmap(
   const byte *bitmap, OLED_COLOR color
 );
 
-extern void oled_fill_black();
-
-
-
+extern void oled_clear();
 
 #endif // _TINY_SSD1306

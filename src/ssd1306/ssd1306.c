@@ -176,7 +176,7 @@ void oled_write_text(uint8_t x, uint8_t y, const char *text, OLED_COLOR color)
   }
 }
 
-void oled_set_plane(uint8_t x, uint8_t y, uint8_t size_x, uint8_t size_y)
+static void oled_set_plane(uint8_t x, uint8_t y, uint8_t size_x, uint8_t size_y)
 {
   const byte fill_black_set_list[] = {
       I2C_OLED_ADDRESS,
@@ -212,7 +212,7 @@ void oled_draw_bitmap(uint8_t x, uint8_t y, uint8_t size_x, uint8_t size_y,
   i2c_stop();
 }
 
-void oled_fill_black()
+void oled_clear()
 {
 
   oled_set_plane(
