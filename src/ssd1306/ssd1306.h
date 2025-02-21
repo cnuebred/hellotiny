@@ -140,6 +140,8 @@ extern void oled_set_cursor(uint8_t x, uint8_t y);
 
 extern void oled_draw_char(uint8_t x, uint8_t y, char c, OLED_COLOR color);
 
+extern void oled_set_pixels(uint8_t x, uint8_t y, byte column);
+
 extern void oled_write_text(uint8_t x, uint8_t y, const char *text, OLED_COLOR color);
 
 extern void oled_draw_bitmap(

@@ -1,6 +1,7 @@
 #include "ssd1306.h"
 #include "../twi/i2c.h"
 #include <util/delay.h>
+#include <avr/eeprom.h>
 
 #define FONT5x7_WIDTH 5
 #define FONT5x7_HIGHT 7
@@ -135,6 +136,18 @@ void oled_set_cursor(uint8_t x, uint8_t y)
   send_package(set_cursor_set_list, NELEMS(set_cursor_set_list));
 }
 
+void oled_set_pixels(uint8_t x, uint8_t y, byte column)
+{
+  oled_set_cursor(x, (uint8_t)(y / 8));
+
+  const byte set_list[] = {
+      I2C_OLED_ADDRESS,
+      OLED_DATA_MODE,
+      (uint8_t)(column),
+  };
+  send_package(set_list, NELEMS(set_list));
+}
+
 void oled_draw_char(uint8_t x, uint8_t y, char c, OLED_COLOR color)
 {
   oled_set_cursor(x, y);
@@ -185,9 +198,6 @@ void oled_draw_bitmap(uint8_t x, uint8_t y, uint8_t size_x, uint8_t size_y,
                       const byte *bitmap, OLED_COLOR color)
 {
   oled_set_plane(x, y, size_x - 1, size_y - 1);
-
-  int seg = 0 % size_x;
-  int page = 0;
 
   i2c_start();
   i2c_write_byte(I2C_OLED_ADDRESS);
