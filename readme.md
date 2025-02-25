@@ -17,8 +17,8 @@ After a while, it could also become a great starting point for other young embed
 ### I2C
 ### UART
 Implementation of uart communication:
-- [ ] Receive
-- [x] Transmission
+- [ ] Receiver
+- [x] Transmitter
 
 ![arduino_uart](./docs/uart.png)
 
