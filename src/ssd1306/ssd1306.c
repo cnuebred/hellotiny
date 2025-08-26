@@ -158,7 +158,7 @@ void oled_draw_char(uint8_t x, uint8_t y, char c, OLED_COLOR color)
 
   for (uint16_t i = 0; i < FONT5x7_WIDTH; i++)
   {
-    byte bitmap_c = pgm_read_byte(&(FONT5x7[c - ' '][0]));
+    byte bitmap_c = pgm_read_byte(&(FONT5x7[c - ' '][i]));
     i2c_write_byte(color ? bitmap_c : ~bitmap_c);
   }
   i2c_write_byte(0x00);
