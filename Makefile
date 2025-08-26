@@ -23,7 +23,7 @@ BUILDDIR = ./build
 
 PROGRAMMER_TYPE = arduino
 # extra arguments to avrdude: baud rate, chip type, -F flag, etc.
-PROGRAMMER_ARGS = -P COM4	
+PROGRAMMER_ARGS = -P COM5
 
 ##########------------------------------------------------------##########
 ##########                  Program Locations                   ##########
