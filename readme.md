@@ -16,7 +16,28 @@ After a while, it could also become a great starting point for other young embed
 
 ### I2C
 ### UART
+Implementation of uart communication:
+- [x] Receive
+- [ ] Transmission
+
+![arduino_uart](./docs/uart.png)
+
 ### SSD1306
+Implementation of basic functions for display SSD1306:
+- [x] Init SSD1306
+- [x] Set cursor
+- [x] Draw char
+- [x] Write text
+- [x] Draw bitmap
+- [x] Draw pixels*
+- [x] Clear
+
+\* there is kind of problem:
+ - attiny85 is pretty... ekhm tiny, so there is no space for continuous copy of display in RAM. While setting one segment at once I can put there only one byte so it is impossible to set: `0x01` and next `0x10` with `0x11` as the result.
+ - Here I can only set pixels at ONCE without multiple steps per segment
+
+all of commands are described in [documentation](./docs/SSD1306.pdf)  
+
 
 ## My notes
 
