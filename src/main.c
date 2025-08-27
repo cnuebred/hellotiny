@@ -106,10 +106,13 @@ int main(void)
     i2c_init();
     oled_init();
     oled_fill_black();
-
+    
     while (true)
     {
-      // oled_set_pixels(10, 10, 0xaa);
-      oled_draw_char(10, 10, 'G', OLED_WHITE);
+      oled_write_text(10, 10, "HELLO TINY", OLED_WHITE);     
+      _delay_us(1);
+      
+      oled_write_text(10, 13, "HELLO SOLITON", OLED_WHITE);     
+      _delay_us(1);
     }
 }
