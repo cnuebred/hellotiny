@@ -149,6 +149,17 @@ extern void oled_draw_bitmap(
   const byte *bitmap, OLED_COLOR color
 );
 
+extern void oled_set_plane(uint8_t x, uint8_t y, uint8_t size_x, uint8_t size_y);
+
 extern void oled_clear();
+
+extern void oled_clear_all();
+
+extern void oled_display_off(void);
+
+extern void oled_display_on(void);
+
+extern void oled_set_contrast(uint8_t c);
+
 
 #endif // _TINY_SSD1306

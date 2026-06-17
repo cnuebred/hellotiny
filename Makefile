@@ -5,7 +5,7 @@
 ##########------------------------------------------------------##########
 
 MCU   = attiny85
-F_CPU = 8000000UL  
+F_CPU = 16000000UL  
 BAUD  = 19200
 ## Also try BAUD = 19200 or 38400 if you're feeling lucky.
 
@@ -34,7 +34,7 @@ CC = avr-gcc
 OBJCOPY = avr-objcopy
 OBJDUMP = avr-objdump
 AVRSIZE = avr-size
-AVRDUDE = /mnt/d/programs/avrdude/avrdude.exe
+AVRDUDE = avrdude
 
 ##########------------------------------------------------------##########
 ##########                   Makefile Magic!                    ##########

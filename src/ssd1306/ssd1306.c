@@ -113,8 +113,8 @@ const byte init_oled_set_list[] = {
     OLED_ENTIRE_DISPLAY_ON__ENABLE_GGDRAM,
     OLED_SET_NORMAL_DISPLAY,
     OLED_SET_DISPLAY_CLOCK_DIVIDE_RATIO_OSCILLATOR_FREQUENCY_, 0xF0,
-    OLED_SET_PRECHARGE_PERIOD_, 0xF1,
-    OLED_SET_VCOM_DESELECT_LEVEL_, 0x20,
+    OLED_SET_PRECHARGE_PERIOD_, 0x22,
+    OLED_SET_VCOM_DESELECT_LEVEL_, 0x10,
     OLED_CHARGE_PUMP_SETTINGS_, OLED_ENABLE_CHARGE_PUMP,
     OLED_SET_DISPLAY_ON};
 
@@ -158,7 +158,7 @@ void oled_draw_char(uint8_t x, uint8_t y, char c, OLED_COLOR color)
 
   for (uint16_t i = 0; i < FONT5x7_WIDTH; i++)
   {
-    byte bitmap_c = pgm_read_byte(&(FONT5x7[c - ' '][0]));
+    byte bitmap_c = pgm_read_byte(&(FONT5x7[c - ' '][i]));
     i2c_write_byte(color ? bitmap_c : ~bitmap_c);
   }
   i2c_write_byte(0x00);
@@ -176,7 +176,7 @@ void oled_write_text(uint8_t x, uint8_t y, const char *text, OLED_COLOR color)
   }
 }
 
-static void oled_set_plane(uint8_t x, uint8_t y, uint8_t size_x, uint8_t size_y)
+static void _oled_set_plane(uint8_t x, uint8_t y, uint8_t size_x, uint8_t size_y)
 {
   const byte fill_black_set_list[] = {
       I2C_OLED_ADDRESS,
@@ -197,7 +197,7 @@ static void oled_set_plane(uint8_t x, uint8_t y, uint8_t size_x, uint8_t size_y)
 void oled_draw_bitmap(uint8_t x, uint8_t y, uint8_t size_x, uint8_t size_y,
                       const byte *bitmap, OLED_COLOR color)
 {
-  oled_set_plane(x, y, size_x - 1, size_y - 1);
+  _oled_set_plane(x, y, size_x - 1, size_y - 1);
 
   i2c_start();
   i2c_write_byte(I2C_OLED_ADDRESS);
@@ -212,14 +212,31 @@ void oled_draw_bitmap(uint8_t x, uint8_t y, uint8_t size_x, uint8_t size_y,
   i2c_stop();
 }
 
-void oled_clear()
+void oled_set_plane(uint8_t x, uint8_t y, uint8_t size_x, uint8_t size_y)
+{
+  _oled_set_plane(x, y, size_x - 1, size_y - 1);
+}
+
+void oled_clear(int y)
 {
 
-  oled_set_plane(
-      0,
-      0,
-      OLED_DISPLAY_ADDRESSING_SIZE_WIDTH - 1,
-      OLED_DISPLAY_ADDRESSING_SIZE_HIGHT - 1);
+  oled_set_cursor(0, y);
+
+  i2c_start();
+  i2c_write_byte(I2C_OLED_ADDRESS);
+  i2c_write_byte(OLED_DATA_MODE);
+
+  uint16_t full_screen_size = (1 * OLED_DISPLAY_ADDRESSING_SIZE_WIDTH);
+  for (uint16_t i = 0; i < full_screen_size; i++)
+  {
+    i2c_write_byte(0x00);
+  }
+
+  i2c_stop();
+}
+
+void oled_clear_all()
+{
 
   i2c_start();
   i2c_write_byte(I2C_OLED_ADDRESS);
@@ -232,4 +249,29 @@ void oled_clear()
   }
 
   i2c_stop();
+}
+
+void oled_display_off(void)
+{
+    const byte cmd[] = {
+        I2C_OLED_ADDRESS,
+        OLED_COMMAND_MODE,
+        OLED_SET_DISPLAY_OFF
+    };
+    send_package(cmd, NELEMS(cmd));
+}
+
+void oled_display_on(void)
+{
+    const byte cmd[] = {
+        I2C_OLED_ADDRESS,
+        OLED_COMMAND_MODE,
+        OLED_SET_DISPLAY_ON
+    };
+    send_package(cmd, NELEMS(cmd));
+}
+
+void oled_set_contrast(uint8_t c) {
+  const byte cmd[] = { I2C_OLED_ADDRESS, OLED_COMMAND_MODE, OLED_SET_CONTRAST_CONTROL_, c };
+  send_package(cmd, NELEMS(cmd));
 }
