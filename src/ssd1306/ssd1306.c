@@ -136,16 +136,19 @@ void oled_set_cursor(uint8_t x, uint8_t y)
   send_package(set_cursor_set_list, NELEMS(set_cursor_set_list));
 }
 
-void oled_set_pixels(uint8_t x, uint8_t y, byte column)
+void oled_set_pixels(uint8_t x, uint8_t y, uint8_t size, const byte* columns)
 {
-  oled_set_cursor(x, (uint8_t)(y / 8));
 
-  const byte set_list[] = {
-      I2C_OLED_ADDRESS,
-      OLED_DATA_MODE,
-      (uint8_t)(column),
-  };
-  send_package(set_list, NELEMS(set_list));
+  for (int i = 0; i < size; i++){
+    oled_set_cursor(x+i, y);
+  
+    const byte set_list[] = {
+        I2C_OLED_ADDRESS,
+        OLED_DATA_MODE,
+        (uint8_t)(columns[i]),
+    };
+    send_package(set_list, NELEMS(set_list));
+  }
 }
 
 void oled_draw_char(uint8_t x, uint8_t y, char c, OLED_COLOR color)
@@ -267,6 +270,18 @@ void oled_display_on(void)
         I2C_OLED_ADDRESS,
         OLED_COMMAND_MODE,
         OLED_SET_DISPLAY_ON
+    };
+    send_package(cmd, NELEMS(cmd));
+}
+
+#define OLED_CMD_INVERT   0xA7
+#define OLED_CMD_NORMAL   0xA6
+void oled_set_invert(int invert)
+{
+    const byte cmd[] = {
+        I2C_OLED_ADDRESS,
+        OLED_COMMAND_MODE,
+        invert ? OLED_CMD_INVERT : OLED_CMD_NORMAL
     };
     send_package(cmd, NELEMS(cmd));
 }

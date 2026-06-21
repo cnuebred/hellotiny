@@ -5,8 +5,8 @@
 
 // =============================  CLOCK STUFFS  =============================
 
-#define F_CPU                                                      16000000UL
-#define UART_BAUDRATE                                                   19200
+#define F_CPU                                                       8000000UL
+#define UART_BAUDRATE                                                   9600
 #define UART_BIT_DELAY_US                         ((1000000 / UART_BAUDRATE))
 
 #define I2C_WAIT_LONG                                                       3

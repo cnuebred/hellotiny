@@ -5,7 +5,7 @@
 ##########------------------------------------------------------##########
 
 MCU   = attiny85
-F_CPU = 16000000UL  
+F_CPU = 8000000UL  
 BAUD  = 19200
 ## Also try BAUD = 19200 or 38400 if you're feeling lucky.
 
@@ -56,6 +56,7 @@ TARGET = $(BUILDDIR)/$(TARGET_NAME)
 #  you can add them in to SOURCES below in the wildcard statement.
 
 EXTEND_SOURCE = \
+		$(SRCDIR)/menu/*.c 		\
 		$(SRCDIR)/twi/*.c 				\
 		$(SRCDIR)/ssd1306/*.c 		\
 
@@ -65,18 +66,19 @@ HEADERS=$(SOURCES:.c=.h)
 
 ## Compilation options, type man avr-gcc if you're curious.
 CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -I. -I$(LIBDIR)
-CFLAGS = -Os -g -std=gnu99 -Wall
+CFLAGS = -Os -g -std=gnu99 -Wall -flto
 ## Use short (8-bit) data types 
 CFLAGS += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums 
+CFLAGS += -DNDEBUG
 ## Splits up object files per function
 CFLAGS += -ffunction-sections -fdata-sections 
-LDFLAGS = -Wl,-Map,$(TARGET).map 
+LDFLAGS = -Wl,-Map,$(TARGET).map -flto
 ## Optional, but often ends up with smaller code
 LDFLAGS += -Wl,--gc-sections 
 ## Relax shrinks code even more, but makes disassembly messy
 ## LDFLAGS += -Wl,--relax
 ## LDFLAGS += -Wl,-u,vfprintf -lprintf_flt -lm  ## for floating-point printf
-## LDFLAGS += -Wl,-u,vfprintf -lprintf_min      ## for smaller printf
+# # LDFLAGS += -Wl,-u,vfprintf -lprintf_min      ## for smaller printf
 TARGET_ARCH = -mmcu=$(MCU)
 
 ## Explicit pattern rules:
